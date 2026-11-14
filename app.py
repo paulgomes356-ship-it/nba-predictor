@@ -7,11 +7,11 @@ import datetime
 import extra_streamlit_components as stx
 
 # --- Initialize Cookie Manager ---
-@st.cache_resource
-def get_cookie_manager():
-    return stx.CookieManager()
+if "cookie_manager" not in st.session_state:
+    st.session_state["cookie_manager"] = stx.CookieManager(key="cookies")
+cookie_manager = st.session_state["cookie_manager"]
 
-cookie_manager = get_cookie_manager()
+
 
 # --- Page Configuration ---
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
