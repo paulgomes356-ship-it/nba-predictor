@@ -160,13 +160,33 @@ with tab3:
                     st.error("⚠️ Please enter a username before submitting!")
                 else:
                     user_picks_sheet = spreadsheet.worksheet('User_Picks')
-                    rows_to_append = []
                     today_str = df_today.iloc[0]['date']
-                    for game, pick in user_selections.items():
-                        rows_to_append.append([today_str, username, game, pick, "", 0])
-                    user_picks_sheet.append_rows(rows_to_append)
-                    st.success(f"Picks locked in for {username}!")
-                    st.balloons()
+
+                    # --- DUPLICATE PREVENTION CHECK ---
+                    existing_picks = user_picks_sheet.get_all_records()
+                    already_submitted = False
+
+                    if existing_picks:
+                        df_existing = pd.DataFrame(existing_picks)
+                        # Filter to only look at today's submissions
+                        today_submissions = df_existing[df_existing['Date'].astype(str) == str(today_str)]
+
+                        # Convert both to lowercase to prevent "PG" and "pg" from counting as different users
+                        existing_users = today_submissions['Username'].astype(str).str.strip().str.lower().tolist()
+                        if username.strip().lower() in existing_users:
+                            already_submitted = True
+
+                    if already_submitted:
+                        st.error(f"⚠️ Hold up! '{username}' has already submitted picks for today.")
+                    else:
+                        # --- PROCEED WITH SUBMISSION ---
+                        rows_to_append = []
+                        for game, pick in user_selections.items():
+                            rows_to_append.append([today_str, username.strip(), game, pick, "", 0])
+
+                        user_picks_sheet.append_rows(rows_to_append)
+                        st.success(f"Picks locked in for {username.strip()}!")
+                        st.balloons()
 
     with col_leaderboard:
         st.subheader("🏆 Community Leaderboard")
