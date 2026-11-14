@@ -15,18 +15,28 @@ if "cookie_manager" not in st.session_state:
     st.session_state["cookie_manager"] = stx.CookieManager(key="cookies")
 cookie_manager = st.session_state["cookie_manager"]
 
-# --- Connect to Google Sheets ---
-scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-cred_dict = json.loads(st.secrets["google_credentials"])
-credentials = Credentials.from_service_account_info(cred_dict, scopes=scopes)
-client = gspread.authorize(credentials)
 
-sheet_id = '1mbmggxfDbYmZ_siQB5tym2gWTLUlOIhOjB3Vfcegkzo'
-spreadsheet = client.open_by_key(sheet_id)
+# --- Connect to Google Sheets (Cached) ---
+@st.cache_resource
+def init_connection():
+    scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+    cred_dict = json.loads(st.secrets["google_credentials"])
+    credentials = Credentials.from_service_account_info(cred_dict, scopes=scopes)
+    client = gspread.authorize(credentials)
+    return client.open_by_key('1mbmggxfDbYmZ_siQB5tym2gWTLUlOIhOjB3Vfcegkzo')
 
-# --- Fetch Data ---
-raw_data = spreadsheet.worksheet('Raw_Data').get_all_records()
-ledger_data = spreadsheet.worksheet('Model_Ledger').get_all_records()
+
+spreadsheet = init_connection()
+
+
+# --- Fetch Data (Cached to prevent API rate limits) ---
+@st.cache_data(ttl=60)  # Refreshes data every 60 seconds max
+def fetch_sheet_data(sheet_name):
+    return spreadsheet.worksheet(sheet_name).get_all_records()
+
+
+raw_data = fetch_sheet_data('Raw_Data')
+ledger_data = fetch_sheet_data('Model_Ledger')
 df_today = pd.DataFrame(raw_data) if raw_data else pd.DataFrame()
 df_ledger = pd.DataFrame(ledger_data) if ledger_data else pd.DataFrame()
 
@@ -42,7 +52,6 @@ with tab1:
     if not df_today.empty:
         df_dash = df_today[['Game', 'Projected Winner']].copy()
 
-        # Calculate % Certainty from the PG-Scores
         total_pg = df_today['home_pg_score'] + df_today['visitor_pg_score']
         winner_pg = df_today[['home_pg_score', 'visitor_pg_score']].max(axis=1)
         df_dash['% Certainty'] = ((winner_pg / total_pg) * 100).round(2).astype(str) + '%'
@@ -79,9 +88,10 @@ with tab1:
         st.markdown("### About last night...(thoughts from the editor):")
         editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
         try:
-            msg_val = spreadsheet.worksheet('Editor_Note').acell('A1').value
-            if msg_val:
-                editor_msg = msg_val
+            # Safely fetch the editor note
+            msg_val = fetch_sheet_data('Editor_Note')
+            # If we used the cached fetch, it returns a list of dicts. We'll grab it directly for simplicity if it exists.
+            editor_msg = spreadsheet.worksheet('Editor_Note').acell('A1').value
         except Exception:
             pass
 
@@ -156,6 +166,7 @@ with tab3:
                         user_picks_sheet = spreadsheet.worksheet('User_Picks')
                         today_str = df_today.iloc[0]['date']
 
+                        # Fetch directly to ensure real-time accuracy upon submission
                         existing_picks = user_picks_sheet.get_all_records()
                         already_submitted = False
 
@@ -184,7 +195,7 @@ with tab3:
 
     with col_leaderboard:
         st.subheader("🏆 Community Leaderboard")
-        leaderboard_data = spreadsheet.worksheet('Leaderboard').get_all_records()
+        leaderboard_data = fetch_sheet_data('Leaderboard')
         if leaderboard_data:
             df_leaderboard = pd.DataFrame(leaderboard_data)
             st.dataframe(df_leaderboard, use_container_width=True, hide_index=True)
