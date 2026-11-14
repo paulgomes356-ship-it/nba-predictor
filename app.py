@@ -84,15 +84,32 @@ with tab1:
 with tab2:
     st.subheader("Selected Stats & Advanced Metrics")
     if not df_today.empty:
-        # Recreate the detailed view with the nitty-gritty stats
-        detailed_cols = [
-            'Game', 'home_win_ratio', 'visitor_win_ratio',
-            'home_rest_days', 'visitor_rest_days',
-            'home_injured_stars', 'visitor_injured_stars',
-            'home_injury_impact', 'visitor_injury_impact',
-            'home_pg_score', 'visitor_pg_score'
-        ]
-        st.dataframe(df_today[detailed_cols], use_container_width=True, hide_index=True)
+        # Pull the columns, including the actual team names
+        detailed_df = df_today[[
+            'Game',
+            'home_team_name', 'home_win_ratio', 'home_rest_days', 'home_injured_stars', 'home_injury_impact',
+            'home_pg_score',
+            'visitor_team_name', 'visitor_win_ratio', 'visitor_rest_days', 'visitor_injured_stars',
+            'visitor_injury_impact', 'visitor_pg_score'
+        ]].copy()
+
+        # Rename the raw snake_case names to clean, professional headers
+        detailed_df.rename(columns={
+            'home_team_name': 'Home Team',
+            'home_win_ratio': 'Home Win Ratio',
+            'home_rest_days': 'Home Rest',
+            'home_injured_stars': 'Home Injuries',
+            'home_injury_impact': 'Home Injury Impact',
+            'home_pg_score': 'Home PG-Score',
+            'visitor_team_name': 'Visitor Team',
+            'visitor_win_ratio': 'Visitor Win Ratio',
+            'visitor_rest_days': 'Visitor Rest',
+            'visitor_injured_stars': 'Visitor Injuries',
+            'visitor_injury_impact': 'Visitor Injury Impact',
+            'visitor_pg_score': 'Visitor PG-Score'
+        }, inplace=True)
+
+        st.dataframe(detailed_df, use_container_width=True, hide_index=True)
     else:
         st.info("Awaiting today's data pipeline execution.")
 
