@@ -2,6 +2,7 @@ import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
 import pandas as pd
+import json
 
 # --- Page Configuration ---
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
@@ -10,10 +11,14 @@ st.write("Welcome to the community leaderboard. Check today's projections and ma
 
 # --- Connect to Google Sheets ---
 scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-# IMPORTANT: Update this path to your actual downloaded JSON key file
-credentials_path = '/Users/paulgomes/Downloads/nba-predictor-514717-c995f23c647e.json'
-credentials = Credentials.from_service_account_file(credentials_path, scopes=scopes)
+
+# Pull the JSON key from Streamlit's secure cloud vault instead of your Mac
+cred_dict = json.loads(st.secrets["google_credentials"])
+credentials = Credentials.from_service_account_info(cred_dict, scopes=scopes)
 client = gspread.authorize(credentials)
+
+sheet_id = '1mbmggxfDbYmZ_siQB5tym2gWTLUlOIhOjB3Vfcegkzo'
+spreadsheet = client.open_by_key(sheet_id)
 
 sheet_id = '1mbmggxfDbYmZ_siQB5tym2gWTLUlOIhOjB3Vfcegkzo'
 spreadsheet = client.open_by_key(sheet_id)
