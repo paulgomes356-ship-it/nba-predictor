@@ -54,11 +54,14 @@ with tab1:
         # 2. Recreate the Model's Record Section
         col1, col2 = st.columns(2)
 
+        has_graded_games = False
         if not df_ledger.empty and 'Correct' in df_ledger.columns:
-            # Filter to only games that have been graded (TRUE/FALSE)
+            # Filter to only games that have been graded
             graded_games = df_ledger[df_ledger['Correct'].isin(['TRUE', 'FALSE', True, False])]
 
             if not graded_games.empty:
+                has_graded_games = True
+
                 # All-Time Record
                 all_time_wins = sum(graded_games['Correct'].astype(str).str.upper() == 'TRUE')
                 all_time_losses = len(graded_games) - all_time_wins
@@ -74,15 +77,26 @@ with tab1:
                     st.metric("Our Table's Record Last Night", f"{ln_wins}-{ln_losses}")
                 with col2:
                     st.metric("Our Table's Record All Time", f"{all_time_wins}-{all_time_losses} ({all_time_pct}%)")
-        else:
-            st.info("Record will calculate after the first slate is graded.")
 
-            # 3. Editor's Thoughts
-            st.markdown("### About last night...(thoughts from the editor):")
-            st.info(editor_msg)
+        # If there is no graded history yet, show this info box
+        if not has_graded_games:
+            st.info("Record will calculate after the first slate is graded tomorrow morning.")
+
+        # 3. Editor's Thoughts
+        st.markdown("### About last night...(thoughts from the editor):")
+
+        # Bulletproof try/except to pull the note safely
+        editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
+        try:
+            msg_val = spreadsheet.worksheet('Editor_Note').acell('A1').value
+            if msg_val:
+                editor_msg = msg_val
+        except Exception:
+            pass  # Fails gracefully if the tab isn't set up yet
+
+        st.info(editor_msg)
     else:
         st.info("Today's games haven't been loaded yet. Check back later!")
-
 # ==========================================
 # TAB 2: THE DEEP ANALYTICS
 # ==========================================
