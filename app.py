@@ -3,6 +3,15 @@ import gspread
 from google.oauth2.service_account import Credentials
 import pandas as pd
 import json
+import datetime
+import extra_streamlit_components as stx
+
+# --- Initialize Cookie Manager ---
+@st.cache_resource
+def get_cookie_manager():
+    return stx.CookieManager()
+
+cookie_manager = get_cookie_manager()
 
 # --- Page Configuration ---
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
@@ -140,7 +149,62 @@ with tab3:
 
     with col_form:
         st.subheader("Make Your Picks!")
-        username = st.text_input("Enter your Username:", placeholder="e.g., PG_Hoops_Fan")
+
+        # --- BROWSER COOKIE CHECK ---
+        if cookie_manager.get(cookie="submitted_today"):
+            st.success("🎉 You've already locked in your picks for today! Come back tomorrow to see the results.")
+        else:
+            username = st.text_input("Enter your Username:", placeholder="e.g., PG_Hoops_Fan")
+
+            with st.form("daily_picks_form"):
+                user_selections = {}
+                if not df_today.empty:
+                    for index, row in df_today.iterrows():
+                        game_name = row['Game']
+                        home_team = row['home_team_name']
+                        away_team = row['visitor_team_name']
+
+                        choice = st.radio(f"**{game_name}**", options=[home_team, away_team], horizontal=True)
+                        user_selections[game_name] = choice
+
+                submitted = st.form_submit_button("Lock in my picks!")
+
+                if submitted:
+                    if username.strip() == "":
+                        st.error("⚠️ Please enter a username before submitting!")
+                    else:
+                        user_picks_sheet = spreadsheet.worksheet('User_Picks')
+                        today_str = df_today.iloc[0]['date']
+
+                        # --- DUPLICATE PREVENTION CHECK (Google Sheets) ---
+                        existing_picks = user_picks_sheet.get_all_records()
+                        already_submitted = False
+
+                        if existing_picks:
+                            df_existing = pd.DataFrame(existing_picks)
+                            today_submissions = df_existing[df_existing['Date'].astype(str) == str(today_str)]
+                            existing_users = today_submissions['Username'].astype(str).str.strip().str.lower().tolist()
+                            if username.strip().lower() in existing_users:
+                                already_submitted = True
+
+                        if already_submitted:
+                            st.error(f"⚠️ Hold up! '{username}' has already submitted picks for today.")
+                        else:
+                            # --- PROCEED WITH SUBMISSION ---
+                            rows_to_append = []
+                            for game, pick in user_selections.items():
+                                rows_to_append.append([today_str, username.strip(), game, pick, "", 0])
+
+                            user_picks_sheet.append_rows(rows_to_append)
+
+                            # --- DROP THE COOKIE ---
+                            # Set the cookie to expire in 1 day so they can pick again tomorrow
+                            expire_date = datetime.datetime.now() + datetime.timedelta(days=1)
+                            cookie_manager.set("submitted_today", "true", expires_at=expire_date)
+
+                            st.success(
+                                f"Picks locked in for {username.strip()}! (Refresh to see the tracker in action)")
+                            st.balloons()
 
         with st.form("daily_picks_form"):
             user_selections = {}
