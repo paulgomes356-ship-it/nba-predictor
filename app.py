@@ -22,7 +22,13 @@ raw_data = spreadsheet.worksheet('Raw_Data').get_all_records()
 ledger_data = spreadsheet.worksheet('Model_Ledger').get_all_records()
 df_today = pd.DataFrame(raw_data) if raw_data else pd.DataFrame()
 df_ledger = pd.DataFrame(ledger_data) if ledger_data else pd.DataFrame()
-
+# Pull the daily editor's note
+try:
+    editor_msg = spreadsheet.worksheet('Editor_Note').acell('A1').value
+    if not editor_msg:
+        editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
+except gspread.exceptions.WorksheetNotFound:
+    editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
 # --- Create Navigation Tabs ---
 tab1, tab2, tab3 = st.tabs(["📊 Dashboard", "📈 Selected Stats", "🏆 Picks & Leaderboard"])
 
@@ -71,10 +77,9 @@ with tab1:
         else:
             st.info("Record will calculate after the first slate is graded.")
 
-        # 3. Editor's Thoughts
-        st.markdown("### About last night...(thoughts from the editor):")
-        st.info(
-            "Last night was certainly an interesting one to start my predictor on, so many crazy upsets! I'll keep updating the formula so keep an eye out.")
+            # 3. Editor's Thoughts
+            st.markdown("### About last night...(thoughts from the editor):")
+            st.info(editor_msg)
     else:
         st.info("Today's games haven't been loaded yet. Check back later!")
 
