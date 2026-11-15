@@ -149,8 +149,8 @@ with tab1:
             except:
                 pass
 
-            # 2. Put the deadline in its own distinct callout box
-            st.info(deadline_msg)
+
+
 
             # 3. Group the header and the actual note in one container
             with st.container():
