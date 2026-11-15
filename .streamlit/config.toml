@@ -1,15 +1,11 @@
 [theme]
-# Primary accent color for buttons and interactive elements
-primaryColor = "#FF4B4B"
+# Neon Blue accent for buttons and tabs
+primaryColor = "#00D4FF"
 
-# Background color for the main content area
-backgroundColor = "#0E1117"
+# Slightly lighter charcoal background
+backgroundColor = "#1E1E24"
+secondaryBackgroundColor = "#2B2B36"
 
-# Background color for the sidebar and secondary containers
-secondaryBackgroundColor = "#262730"
-
-# Main text color
-textColor = "#FAFAFA"
-
-# Font family (options: "sans serif", "serif", "monospace")
+# Pure white text
+textColor = "#FFFFFF"
 font = "sans serif"
