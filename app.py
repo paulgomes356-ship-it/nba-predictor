@@ -131,13 +131,10 @@ with tab1:
                 with col2:
                     st.metric("Our Table's Record All Time", f"{all_time_wins}-{all_time_losses} ({all_time_pct}%)")
 
-        if not has_graded_games:
-            st.info("Record will calculate after the first slate is graded tomorrow morning.")
-
             if not has_graded_games:
                 st.info("Record will calculate after the first slate is graded tomorrow morning.")
 
-                # 1. Fetch the messages from Google Sheets
+            # 1. Fetch the messages from Google Sheets
             editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
             deadline_msg = "PICK SUBMISSIONS WILL BE DUE BEFORE THE GAME STARTS"
 
@@ -152,6 +149,13 @@ with tab1:
             except:
                 pass
 
+            # 2. Put the deadline in its own distinct callout box
+            st.info(deadline_msg)
+
+            # 3. Group the header and the actual note in one container
+            with st.container():
+                st.markdown("### About last night...(thoughts from the editor):")
+                st.write(editor_msg)
             # 2. Put the deadline in its own distinct callout box
             st.info(deadline_msg)
 
