@@ -55,7 +55,10 @@ with tab1:
 
         total_pg = df_today['home_pg_score'] + df_today['visitor_pg_score']
         winner_pg = df_today[['home_pg_score', 'visitor_pg_score']].max(axis=1)
-        df_dash['% Certainty'] = ((winner_pg / total_pg) * 100).round(2).astype(str) + '%'
+        # Calculate realistic % Certainty using a margin-based smoothing formula
+        margin = abs(df_today['home_pg_score'] - df_today['visitor_pg_score'])
+        # Base 50% chance + up to 45% extra certainty based on the size of the margin
+        df_dash['% Certainty'] = (50 + (margin / (margin + 100)) * 45).round(2).astype(str) + '%'
 
         st.dataframe(df_dash, use_container_width=True, hide_index=True)
 

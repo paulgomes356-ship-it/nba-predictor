@@ -6,6 +6,7 @@ import io
 import os
 from datetime import date, timedelta
 import pandas as pd
+import time
 
 
 
@@ -210,7 +211,8 @@ def get_nba_daily_slate():
         # --- 1. OVERWRITE RAW DATA ---
         raw_data_sheet = spreadsheet.worksheet('Raw_Data')
         raw_data_sheet.clear()  # Wipes yesterday's slate
-        set_with_dataframe(raw_data_sheet, df_raw)  # Injects today's slate
+        set_with_dataframe(raw_data_sheet, df_raw)
+        time.sleep(3)# Injects today's slate
         print("Raw Data successfully pushed to cloud.")
 
         # --- 2. GRADE PAST LEDGER GAMES ---
@@ -273,19 +275,19 @@ def get_nba_daily_slate():
                             game_matchup = str(row['Game'])
                             user_pick = str(row['User Pick'])
 
-                            # Grade the user's pick using the substring match logic
-                            is_correct = False
-                            for actual_winner in results_dict.values():
-                                if str(actual_winner) in game_matchup and str(actual_winner) in user_pick:
-                                    is_correct = True
-                                    break
+                            # Grade the user's pick using direct dictionary lookup
+                            actual_winner = str(results_dict.get(game_matchup, "")).strip()
 
-                            result_str = "WIN" if is_correct else "LOSS"
-                            points = 0
+                            # If the game has no winner yet (postponed/missing), do not grade it
+                            if actual_winner == "" or actual_winner == "None":
+                                result_str = "PENDING"
+                                points = 0
+                            else:
+                                # Check for a match (handles slight naming differences like "LA Clippers" vs "Clippers")
+                                is_correct = (actual_winner in user_pick) or (user_pick in actual_winner)
 
-                            # The Point System
-                            if is_correct:
-                                points = 100  # Standard 100 points for a win
+                                result_str = "WIN" if is_correct else "LOSS"
+                                points = 100 if is_correct else 0
 
                                 # Contrarian Bonus: If less than 30% of the community picked this team
                                 pct_picked = pick_counts.get((game_matchup, user_pick), 1) / total_game_picks.get(
@@ -316,10 +318,13 @@ def get_nba_daily_slate():
                     leaderboard = leaderboard.sort_values(by='Total_Points', ascending=False)
 
                     # Rename columns to perfectly match your Sheet headers and push the update
+                    leaderboard = leaderboard[
+                        ['Username', 'Total_Wins', 'Total_Losses', 'Win Percentage', 'Total_Points']]
                     leaderboard.columns = ['Username', 'Total Wins', 'Total Losses', 'Win Percentage', 'Total Points']
                     lb_sheet = spreadsheet.worksheet('Leaderboard')
                     lb_sheet.clear()
                     set_with_dataframe(lb_sheet, leaderboard)
+                    time.sleep(3)
                     print("Leaderboard successfully pushed to cloud.")
 
         # --- 3. APPEND TODAY'S PREDICTIONS ---
@@ -330,6 +335,7 @@ def get_nba_daily_slate():
 
         # Append today's slate to the very bottom
         ledger_sheet.append_rows(today_predictions.fillna("").values.tolist())
+        time.sleep(3)
         print("Ledger successfully updated in the cloud.")
 
     except Exception as e:
