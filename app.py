@@ -72,9 +72,18 @@ with tab1:
 
             if not graded_games.empty:
                 has_graded_games = True
-                all_time_wins = sum(graded_games['Correct'].astype(str).str.upper() == 'TRUE')
-                all_time_losses = len(graded_games) - all_time_wins
-                all_time_pct = round((all_time_wins / len(graded_games)) * 100, 1)
+
+                # 1. Tally the graded games from the cloud ledger
+                ledger_wins = sum(graded_games['Correct'].astype(str).str.upper() == 'TRUE')
+                ledger_losses = len(graded_games) - ledger_wins
+
+                # 2. Add the manual Excel record (5 wins, 4 losses)
+                all_time_wins = ledger_wins + 5
+                all_time_losses = ledger_losses + 4
+
+                # 3. Calculate new Win Percentage
+                total_all_time_games = all_time_wins + all_time_losses
+                all_time_pct = round((all_time_wins / total_all_time_games) * 100, 1) if total_all_time_games > 0 else 0
 
                 last_date = graded_games['Date'].max()
                 last_night_games = graded_games[graded_games['Date'] == last_date]
