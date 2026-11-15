@@ -9,6 +9,42 @@ import extra_streamlit_components as stx
 
 # --- Page Configuration ---
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
+st.markdown("""
+<style>
+    /* 1. Import a sleek, modern font (Outfit) */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Outfit', sans-serif !important;
+    }
+
+    /* 2. Liquid Glass (Glassmorphism) effect for main containers */
+    [data-testid="stVerticalBlock"] > div > div {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        padding: 15px;
+    }
+
+    /* 3. Round the edges of the data tables */
+    [data-testid="stDataFrame"] {
+        border-radius: 15px !important;
+        overflow: hidden !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 4. Sleeker Headings */
+    h1, h2, h3 {
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+</style>
+""", unsafe_allow_html=True)
 st.title("🏀 PG's Daily NBA Predictor")
 
 # --- Initialize Cookie Manager ---
