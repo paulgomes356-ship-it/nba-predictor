@@ -134,15 +134,31 @@ with tab1:
         if not has_graded_games:
             st.info("Record will calculate after the first slate is graded tomorrow morning.")
 
-            # 1. Fetch the messages from Google Sheets FIRST
+            if not has_graded_games:
+                st.info("Record will calculate after the first slate is graded tomorrow morning.")
+
+                # 1. Fetch the messages from Google Sheets
             editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
             deadline_msg = "PICK SUBMISSIONS WILL BE DUE BEFORE THE GAME STARTS"
+
             try:
-                # Fetches Editor Note from A1 and Deadline from B1
-                editor_msg = spreadsheet.worksheet('Editor_Note').acell('A1').value
-                deadline_msg = spreadsheet.worksheet('Editor_Note').acell('B1').value
+                # Row 1: Deadline info
+                base_deadline = spreadsheet.worksheet('Editor_Note').acell('A1').value
+                cutoff_time = spreadsheet.worksheet('Editor_Note').acell('B1').value
+                deadline_msg = f"{base_deadline} ({cutoff_time} EST)"
+
+                # Row 2: Editor's Note (No more overlapping text!)
+                editor_msg = spreadsheet.worksheet('Editor_Note').acell('A2').value
             except:
                 pass
+
+            # 2. Put the deadline in its own distinct callout box
+            st.info(deadline_msg)
+
+            # 3. Group the header and the actual note in one container
+            with st.container():
+                st.markdown("### About last night...(thoughts from the editor):")
+                st.write(editor_msg)
 
             # 2. Put the deadline in its own distinct callout box
             st.info(deadline_msg)
