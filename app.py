@@ -109,22 +109,29 @@ with tab1:
 with tab2:
     st.subheader("Selected Stats & Advanced Metrics")
     if not df_today.empty:
+        # Safety check: Prevent app crash if the backend script hasn't pushed the new columns yet
+        if 'home_heat_emoji' not in df_today.columns:
+            df_today['home_heat_emoji'] = "TBD"
+            df_today['visitor_heat_emoji'] = "TBD"
+
         detailed_df = df_today[[
             'Game',
-            'home_team_name', 'home_win_ratio', 'home_rest_days', 'home_injured_stars', 'home_injury_impact',
-            'home_pg_score',
-            'visitor_team_name', 'visitor_win_ratio', 'visitor_rest_days', 'visitor_injured_stars',
-            'visitor_injury_impact', 'visitor_pg_score'
+            'home_team_name', 'home_heat_emoji', 'home_win_ratio', 'home_rest_days',
+            'home_injured_stars', 'home_injury_impact', 'home_pg_score',
+            'visitor_team_name', 'visitor_heat_emoji', 'visitor_win_ratio', 'visitor_rest_days',
+            'visitor_injured_stars', 'visitor_injury_impact', 'visitor_pg_score'
         ]].copy()
 
         detailed_df.rename(columns={
             'home_team_name': 'Home Team',
+            'home_heat_emoji': 'Home Heat',
             'home_win_ratio': 'Home Win Ratio',
             'home_rest_days': 'Home Rest',
             'home_injured_stars': 'Home Injuries',
             'home_injury_impact': 'Home Injury Impact',
             'home_pg_score': 'Home PG-Score',
             'visitor_team_name': 'Visitor Team',
+            'visitor_heat_emoji': 'Visitor Heat',
             'visitor_win_ratio': 'Visitor Win Ratio',
             'visitor_rest_days': 'Visitor Rest',
             'visitor_injured_stars': 'Visitor Injuries',
