@@ -134,19 +134,23 @@ with tab1:
         if not has_graded_games:
             st.info("Record will calculate after the first slate is graded tomorrow morning.")
 
-        st.markdown("### About last night...(thoughts from the editor):")
-        editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
-        try:
-            # Safely fetch the editor note
-            msg_val = fetch_sheet_data('Editor_Note')
-            # If we used the cached fetch, it returns a list of dicts. We'll grab it directly for simplicity if it exists.
-            editor_msg = spreadsheet.worksheet('Editor_Note').acell('A1').value
-        except Exception:
-            pass
+            # 1. Fetch the messages from Google Sheets FIRST
+            editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
+            deadline_msg = "PICK SUBMISSIONS WILL BE DUE BEFORE THE GAME STARTS"
+            try:
+                # Fetches Editor Note from A1 and Deadline from B1
+                editor_msg = spreadsheet.worksheet('Editor_Note').acell('A1').value
+                deadline_msg = spreadsheet.worksheet('Editor_Note').acell('B1').value
+            except:
+                pass
 
-        st.info(editor_msg)
-    else:
-        st.info("Today's games haven't been loaded yet. Check back later!")
+            # 2. Put the deadline in its own distinct callout box
+            st.info(deadline_msg)
+
+            # 3. Group the header and the actual note in one container
+            with st.container():
+                st.markdown("### About last night...(thoughts from the editor):")
+                st.write(editor_msg)
 
 # ==========================================
 # TAB 2: THE DEEP ANALYTICS
