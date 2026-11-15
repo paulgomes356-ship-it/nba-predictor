@@ -160,17 +160,7 @@ with tab1:
             st.info(deadline_msg)
 
             # 3. Group the header and the actual note in one container
-            with st.container():
-                st.markdown("### About last night...(thoughts from the editor):")
-                st.write(editor_msg)
 
-            # 2. Put the deadline in its own distinct callout box
-            st.info(deadline_msg)
-
-            # 3. Group the header and the actual note in one container
-            with st.container():
-                st.markdown("### About last night...(thoughts from the editor):")
-                st.write(editor_msg)
 
 # ==========================================
 # TAB 2: THE DEEP ANALYTICS
