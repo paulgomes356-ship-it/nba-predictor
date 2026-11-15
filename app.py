@@ -141,7 +141,31 @@ with tab3:
     with col_form:
         st.subheader("Make Your Picks!")
 
-        if cookie_manager.get(cookie="submitted_today"):
+        # --- DYNAMIC CUTOFF TIME ---
+        cutoff_str = "19:00"  # Default to 7:00 PM
+        try:
+            # Pull the dynamic time from cell B1
+            val = spreadsheet.worksheet('Editor_Note').acell('B1').value
+            if val:
+                cutoff_str = val.strip()
+        except Exception:
+            pass  # Fails gracefully if B1 is empty
+
+        # Parse the string (e.g., "15:30") into hours and minutes
+        try:
+            cutoff_hour, cutoff_min = map(int, cutoff_str.split(':'))
+        except ValueError:
+            cutoff_hour, cutoff_min = 19, 0  # Failsafe in case of a typo in the sheet
+
+        eastern = pytz.timezone('US/Eastern')
+        now_est = datetime.datetime.now(eastern)
+        cutoff_time = now_est.replace(hour=cutoff_hour, minute=cutoff_min, second=0, microsecond=0)
+
+        if now_est > cutoff_time:
+            # Format to standard 12-hour time for the error message
+            display_time = cutoff_time.strftime('%I:%M %p').lstrip('0')
+            st.error(f"🔒 Picks are locked! Today's cutoff was {display_time} EST. Come back tomorrow.")
+        elif cookie_manager.get(cookie="submitted_today"):
             st.success("🎉 You've already locked in your picks for today! Come back tomorrow to see the results.")
         else:
             username = st.text_input("Enter your Username:", placeholder="e.g., PG_Hoops_Fan")
@@ -166,7 +190,6 @@ with tab3:
                         user_picks_sheet = spreadsheet.worksheet('User_Picks')
                         today_str = df_today.iloc[0]['date']
 
-                        # Fetch directly to ensure real-time accuracy upon submission
                         existing_picks = user_picks_sheet.get_all_records()
                         already_submitted = False
 
