@@ -43,8 +43,8 @@ st.markdown("""
 
     html, body, [class*="css"], .stApp {
         font-family: 'Saira', sans-serif !important;
-        background-color: #F8F9FA !important; /* Crisp off-white background */
-        color: #111111 !important; /* Dark text for contrast */
+        background-color: #F8F9FA !important;
+        color: #111111 !important;
     }
 
     /* 2. Redaction 50 Headers */
@@ -57,26 +57,44 @@ st.markdown("""
     /* 3. The Main Title */
     .main-title {
         text-align: center;
-        border-bottom: 2px solid #FF5722; /* Vibrant orange accent line */
+        border-bottom: 2px solid #FF5722;
         padding-bottom: 15px;
         margin-bottom: 30px;
-        text-shadow: none !important;
     }
 
     /* 4. Crisp White Cards */
     [data-testid="stVerticalBlock"] > div > div {
         background: #FFFFFF !important;
         border: 1px solid #EBEBEB !important;
-        border-top: 3px solid #FF5722 !important; /* Bold orange highlight on top of every card */
+        border-top: 3px solid #FF5722 !important;
         border-radius: 6px !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
         padding: 15px !important;
     }
 
-    /* 5. Clean Data Tables */
-    [data-testid="stDataFrame"] {
-        border-radius: 4px !important;
-        border: 1px solid #EBEBEB !important;
+    /* 5. Custom HTML Tables (This styles the inside of the table!) */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Saira', sans-serif !important; /* Forces Saira for table data */
+        font-size: 15px;
+    }
+    .custom-table th {
+        background-color: #FF5722; /* Orange headers */
+        color: #FFFFFF;
+        font-family: 'Redaction 50', serif !important; /* Bespoke font for headers */
+        font-weight: 500;
+        text-align: left;
+        padding: 12px;
+        border: 1px solid #EBEBEB;
+    }
+    .custom-table td {
+        padding: 10px 12px;
+        border: 1px solid #EBEBEB;
+        color: #111111;
+    }
+    .custom-table tr:nth-child(even) {
+        background-color: #FDFDFD; /* Very faint alternating row colors */
     }
 
     /* 6. Subtle Dividers */
@@ -138,7 +156,7 @@ with tab1:
         # Base 50% chance + up to 45% extra certainty based on the size of the margin
         df_dash['% Certainty'] = (50 + (margin / (margin + 100)) * 45).round(2).astype(str) + '%'
 
-        st.dataframe(df_dash, use_container_width=True, hide_index=True)
+        st.markdown(df_dash.to_html(index=False, escape=False, classes="custom-table"), unsafe_allow_html=True)
 
 
         col1, col2 = st.columns(2)
@@ -233,7 +251,7 @@ with tab2:
             'visitor_pg_score': 'Visitor PG-Score'
         }, inplace=True)
 
-        st.dataframe(detailed_df, use_container_width=True, hide_index=True)
+        st.markdown(detailed_df.to_html(index=False, escape=False, classes="custom-table"), unsafe_allow_html=True)
     else:
         st.info("Awaiting today's data pipeline execution.")
 
@@ -336,6 +354,6 @@ with tab3:
         leaderboard_data = fetch_sheet_data('Leaderboard')
         if leaderboard_data:
             df_leaderboard = pd.DataFrame(leaderboard_data)
-            st.dataframe(df_leaderboard, use_container_width=True, hide_index=True)
+            st.markdown(df_leaderboard.to_html(index=False, escape=False, classes="custom-table"), unsafe_allow_html=True)
         else:
             st.info("The leaderboard is currently empty.")
