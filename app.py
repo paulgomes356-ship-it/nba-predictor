@@ -158,7 +158,7 @@ with tab1:
             - **+100 Points:** Correct Game Prediction
             - **+50 Points (Contrarian Bonus):** Pick a winner that less than 30% of the community chose.
             - **+50 Points (Prop Pick):** Correctly guess the night's top scorer.
-            - **+25 Points (Loyalty Bonus):** Awarded automatically for every 5 days you submit picks! *(Loyalty counting starts on 11/17/2026)*
+            - **+25 Points (Loyalty Bonus):** Awarded automatically for every 5 days you submit picks! 
             """)
 
     if not df_today.empty:
