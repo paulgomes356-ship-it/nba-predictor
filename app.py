@@ -7,6 +7,32 @@ import pytz
 import datetime
 import extra_streamlit_components as stx
 
+
+@st.cache_data(ttl=86400)  # Caches the data for 24 hours to prevent rate-limit bans
+def get_top_scorers():
+    try:
+        # The 2026-2027 season is labeled as 2027 in their URL system
+        url = "https://www.basketball-reference.com/leagues/NBA_2027_per_game.html"
+
+        # Read the first table on the webpage
+        df = pd.read_html(url)[0]
+
+        # Clean the data (remove repeated table headers)
+        df = df[df['Player'] != 'Player']
+
+        # Remove duplicate rows if a player gets traded (BBall-Ref lists them multiple times)
+        df = df.drop_duplicates(subset='Player')
+
+        # Convert the Points column to actual numbers, sort highest to lowest, take the top 5
+        df['PTS'] = pd.to_numeric(df['PTS'])
+        top_5 = df.sort_values(by='PTS', ascending=False).head(5)
+
+        # Extract the names and combine them with commas
+        return ", ".join(top_5['Player'].tolist())
+    except Exception as e:
+        # Safe backup list in case the site goes down or blocks the connection
+        return "Giannis Antetokounmpo, Shai Gilgeous-Alexander, Luka Doncic, Nikola Jokic, Jayson Tatum"
+
 # --- Page Configuration ---
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
@@ -45,7 +71,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-st.title("🏀 PG's Daily NBA Predictor")
+st.markdown("<h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>", unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
 if "cookie_manager" not in st.session_state:
@@ -251,6 +277,14 @@ with tab3:
                         choice = st.radio(f"**{game_name}**", options=[home_team, away_team], horizontal=True)
                         user_selections[game_name] = choice
 
+                # --- NEW PROP PICK CODE GOES HERE ---
+                st.divider() # Adds a clean line to separate the games from the prop bet
+                top_5_list = get_top_scorers()
+                st.markdown("### 🎯 Daily Prop Pick")
+                st.write(f"Who will score the most points tonight outside of: **{top_5_list}**?")
+                top_scorer_guess = st.text_input("Enter player name:")
+                # ------------------------------------
+
                 submitted = st.form_submit_button("Lock in my picks!")
 
                 if submitted:
@@ -275,7 +309,9 @@ with tab3:
                         else:
                             rows_to_append = []
                             for game, pick in user_selections.items():
-                                rows_to_append.append([today_str, username.strip(), game, pick, "", 0])
+                                # Added top_scorer_guess to the very end of this list!
+                                rows_to_append.append(
+                                    [today_str, username.strip(), game, pick, "", 0, top_scorer_guess])
 
                             user_picks_sheet.append_rows(rows_to_append)
 
