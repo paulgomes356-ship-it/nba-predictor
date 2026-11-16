@@ -66,6 +66,8 @@ st.markdown("""
         padding-bottom: 15px;
         margin-bottom: 30px;
         text-shadow: none !important;
+        font-family: 'Redaction 50'
+        
     }
 
     /* 6. Crisp White Cards */
