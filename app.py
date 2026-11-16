@@ -73,7 +73,6 @@ st.markdown("""
 
 <h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>", unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
 if "cookie_manager" not in st.session_state:
@@ -126,7 +125,6 @@ with tab1:
 
         st.dataframe(df_dash, use_container_width=True, hide_index=True)
 
-        st.markdown("---")
 
         col1, col2 = st.columns(2)
 
