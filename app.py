@@ -70,6 +70,8 @@ st.markdown("""
         text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 </style>
+
+<h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>", unsafe_allow_html=True)
 
