@@ -1,11 +1,13 @@
 [theme]
-# Neon Blue accent for buttons and tabs
-primaryColor = "#00D4FF"
+# Muted blue accent for minimal distraction
+primaryColor = "#4A90E2"
 
-# Slightly lighter charcoal background
-backgroundColor = "#1E1E24"
-secondaryBackgroundColor = "#2B2B36"
+# Deep matte charcoal for the background
+backgroundColor = "#121212"
 
-# Pure white text
-textColor = "#FFFFFF"
+# Slightly lighter matte for sidebars/menus
+secondaryBackgroundColor = "#1E1E1E"
+
+# Off-white text for less eye strain
+textColor = "#E0E0E0"
 font = "sans serif"

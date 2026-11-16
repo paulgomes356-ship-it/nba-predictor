@@ -37,41 +37,40 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import a sleek, modern font (Outfit) */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+    /* 1. Import a classic data-journalism font (Inter) */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Outfit', sans-serif !important;
+        font-family: 'Inter', sans-serif !important;
     }
 
-    /* 2. Liquid Glass (Glassmorphism) effect for main containers */
+    /* 2. Flat, minimalist layout (Removes Liquid Glass) */
     [data-testid="stVerticalBlock"] > div > div {
-        background: rgba(255, 255, 255, 0.03) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-        padding: 15px;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-radius: 0px !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 5px;
     }
 
-    /* 3. Round the edges of the data tables */
+    /* 3. Ledger-style tables: thin borders, squared corners */
     [data-testid="stDataFrame"] {
-        border-radius: 15px !important;
-        overflow: hidden !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 2px !important;
+        border: 1px solid #333333 !important;
     }
 
-    /* 4. Sleeker Headings */
+    /* 4. Crisp, unshadowed headers */
     h1, h2, h3 {
-        color: #FFFFFF !important;
+        color: #F8F9FA !important;
         font-weight: 600 !important;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        text-shadow: none !important;
+        margin-bottom: 0.5rem !important;
     }
 </style>
 
-<h1 style='text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏀 HoopPix</h1>
+<h1 style='text-align: left; border-bottom: 1px solid #333; padding-bottom: 15px;'>🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
@@ -158,9 +157,9 @@ with tab1:
                     st.metric("Our Table's Record All Time", f"{all_time_wins}-{all_time_losses} ({all_time_pct}%)")
 
             if not has_graded_games:
-                st.info("Record will calculate after the first slate is graded tomorrow morning.")
+                st.markdown("*Record will calculate after the first slate is graded tomorrow morning.*")
 
-            # 1. Fetch the messages from Google Sheets
+                # 1. Fetch the messages from Google Sheets
             editor_msg = "Welcome to the predictor! Check back tomorrow for updates."
             deadline_msg = "PICK SUBMISSIONS WILL BE DUE BEFORE THE GAME STARTS"
 
@@ -175,17 +174,11 @@ with tab1:
             except:
                 pass
 
-
-
-
-            # 3. Group the header and the actual note in one container
-            with st.container():
-                st.markdown("### About last night...(thoughts from the editor):")
-                st.write(editor_msg)
-            # 2. Put the deadline in its own distinct callout box
-            st.info(deadline_msg)
-
-            # 3. Group the header and the actual note in one container
+            # 2. Minimalist Text Layout (No more st.info boxes)
+            st.divider()  # Creates a clean 1px horizontal line
+            st.markdown(f"**Editor's Note:** {editor_msg}")
+            st.markdown(f"*{deadline_msg}*")
+            st.divider()
 
 
 # ==========================================
