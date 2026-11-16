@@ -37,23 +37,23 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import Fonts (Redaction 50 via Fontsource CDN + Saira via Google) */
+    /* 1. Import Fonts */
     @import url('https://cdn.jsdelivr.net/npm/@fontsource/redaction-50/index.css');
     @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
 
     /* 2. Global Colors */
     html, body, [class*="css"], .stApp {
-        background-color: #F8F9FA !important; /* Crisp off-white background */
-        color: #111111 !important; /* Dark text for contrast */
+        background-color: #F8F9FA !important; 
+        color: #111111 !important; 
     }
 
-    /* 3. Force Saira on EVERY standard text element (Alerts, Labels, Metrics, Buttons) */
-    html, body, [class*="css"], .stApp, p, span, div, label, li, .stAlert, input, button, .stMetricValue, .stMetricLabel {
+    /* 3. Force Saira on standard text (Alerts, Labels, Metrics, Buttons, Paragraphs) */
+    p, label, li, .stAlert, input, button, .stMetricValue, .stMetricLabel {
         font-family: 'Saira', sans-serif !important;
     }
 
-    /* 4. Force Redaction 50 on all Headers */
-    h1, h2, h3, h4, h5, h6, .main-title {
+    /* 4. Force Redaction 50 strictly on Headers and Main Title */
+    h1, h2, h3, h4, h5, h6, .main-title, .main-title * {
         font-family: 'Redaction 50', serif !important;
         color: #111111 !important; 
         letter-spacing: 0.5px;
@@ -66,8 +66,6 @@ st.markdown("""
         padding-bottom: 15px;
         margin-bottom: 30px;
         text-shadow: none !important;
-        font-family: 'Redaction 50'
-        
     }
 
     /* 6. Crisp White Cards */
@@ -84,13 +82,13 @@ st.markdown("""
     .custom-table {
         width: 100%;
         border-collapse: collapse;
-        font-family: 'Saira', sans-serif !important; /* Forces Saira for table data */
+        font-family: 'Saira', sans-serif !important; 
         font-size: 15px;
     }
     .custom-table th {
         background-color: #FF5722;
         color: #FFFFFF !important;
-        font-family: 'Redaction 50', serif !important; /* Forces Redaction 50 for table headers */
+        font-family: 'Redaction 50', serif !important; 
         font-weight: 500;
         text-align: left;
         padding: 12px;
@@ -104,7 +102,7 @@ st.markdown("""
     .custom-table tr:nth-child(even) {
         background-color: #FDFDFD;
     }
-
+    
     /* 8. Subtle Dividers */
     hr {
         border-top: 1px solid #EBEBEB !important;
@@ -112,7 +110,7 @@ st.markdown("""
     }
 </style>
 
-<h1 class="main-title" style="font-family: 'Redaction 50', serif !important;">🏀 HoopPix</h1>
+<h1 class="main-title">🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
