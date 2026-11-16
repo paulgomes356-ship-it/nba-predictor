@@ -110,7 +110,7 @@ st.markdown("""
     }
 </style>
 
-<h1 class="main-title">🏀 HoopPix</h1>
+<h1 class="main-title" style="font-family: 'Redaction 50', serif !important;">🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
