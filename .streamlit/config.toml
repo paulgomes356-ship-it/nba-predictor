@@ -1,7 +1,13 @@
 [theme]
-base = "dark"
-primaryColor = "#FFFFFF"
-backgroundColor = "#080808"
-secondaryBackgroundColor = "#141414"
-textColor = "#EAEAEA"
+# Premium Muted Gold for accents (radio buttons, progress bars)
+primaryColor = "#E2B714"
+
+# Deep charcoal/slate for the main background
+backgroundColor = "#0D0D12"
+
+# Slightly lighter slate for sidebars to create depth
+secondaryBackgroundColor = "#15151A"
+
+# Crisp off-white text
+textColor = "#E2E8F0"
 font = "sans serif"

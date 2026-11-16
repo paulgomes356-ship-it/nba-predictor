@@ -37,51 +37,54 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap');
+    /* 1. Import Premium Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap');
 
-html, body, [class*="css"], .stApp, .stMarkdown, p, label {
-    font-family: 'Inter', sans-serif;
-}
-.stApp { background-color: #080808; }
+    html, body, [class*="css"], .stApp {
+        font-family: 'Inter', sans-serif !important;
+        background-color: #0D0D12 !important; /* Deep charcoal background */
+    }
 
-h1, h2, h3 {
-    font-family: 'Playfair Display', serif !important;
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-}
+    /* 2. Elegant, Intricate Headers */
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif !important;
+        color: #F8F9FA !important;
+        letter-spacing: 0.5px;
+    }
 
-.block-container { max-width: 1200px; padding-top: 2rem; }
+    /* 3. The Main Title (With a subtle premium glow) */
+    .main-title {
+        text-align: center;
+        border-bottom: 1px solid #2A2A35;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        text-shadow: 0px 4px 15px rgba(226, 183, 20, 0.15); /* Faint gold glow */
+    }
 
-/* Tabs: small uppercase labels, white when active */
-button[data-baseweb="tab"] {
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #777 !important;
-}
-button[data-baseweb="tab"][aria-selected="true"] { color: #FFFFFF !important; }
+    /* 4. Premium Dark Cards (Intricate, non-glass containers) */
+    [data-testid="stVerticalBlock"] > div > div {
+        background: linear-gradient(145deg, #15151A, #111115) !important;
+        border: 1px solid #2A2A35 !important;
+        border-top: 1px solid #3A3A45 !important; /* Slight top highlight for depth */
+        border-radius: 6px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+        padding: 15px !important;
+    }
 
-/* Metrics: serif numbers, muted uppercase labels */
-div[data-testid="stMetricValue"] {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.4rem;
-}
-div[data-testid="stMetricLabel"] {
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.7rem;
-    opacity: 0.6;
-}
+    /* 5. Sharp Data Tables */
+    [data-testid="stDataFrame"] {
+        border-radius: 4px !important;
+        border: 1px solid #2A2A35 !important;
+    }
 
-/* Inputs get a visible edge */
-div[data-baseweb="input"] > div {
-    background-color: #141414 !important;
-    border: 1px solid #333 !important;
-}
-
-hr { border-top: 1px solid #222 !important; margin: 2em 0 !important; }
-#MainMenu, footer { visibility: hidden; }
+    /* 6. Clean Dividers */
+    hr {
+        border-top: 1px solid #2A2A35 !important;
+        margin: 1.5em 0 !important;
+    }
 </style>
+
+<h1 class="main-title">🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
