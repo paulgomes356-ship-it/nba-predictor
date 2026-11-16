@@ -113,6 +113,8 @@ st.markdown("""
 <h1 class="main-title">🏀 HoopPix</h1>
 """, unsafe_allow_html=True)
 
+
+
 # --- Initialize Cookie Manager ---
 if "cookie_manager" not in st.session_state:
     st.session_state["cookie_manager"] = stx.CookieManager(key="cookies")
@@ -151,6 +153,13 @@ tab1, tab2, tab3 = st.tabs(["📊 Dashboard", "📈 Selected Stats", "🏆 Picks
 # ==========================================
 with tab1:
     st.subheader("Tonight's Slate & PG Projections")
+    st.markdown("### 🏆 HoopPix Scoring System")
+    st.info("""
+            - **+100 Points:** Correct Game Prediction
+            - **+50 Points (Contrarian Bonus):** Pick a winner that less than 30% of the community chose.
+            - **+50 Points (Prop Pick):** Correctly guess the night's top scorer.
+            - **+25 Points (Loyalty Bonus):** Awarded automatically for every 5 days you submit picks!
+            """)
 
     if not df_today.empty:
         df_dash = df_today[['Game', 'Projected Winner']].copy()
