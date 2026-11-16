@@ -1,13 +1,7 @@
 [theme]
-# Pure white for any active accents/links
+base = "dark"
 primaryColor = "#FFFFFF"
-
-# Pitch black background
 backgroundColor = "#080808"
-
-# Pitch black for sidebars/menus (makes them blend perfectly)
-secondaryBackgroundColor = "#080808"
-
-# Crisp off-white text for readability
+secondaryBackgroundColor = "#141414"
 textColor = "#EAEAEA"
 font = "sans serif"

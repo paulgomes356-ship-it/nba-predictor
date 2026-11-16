@@ -37,45 +37,51 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import Editorial Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap');
 
-    html, body, [class*="css"], .stApp {
-        font-family: 'Inter', sans-serif !important;
-        background-color: #080808 !important; /* Pitch black */
-    }
+html, body, [class*="css"], .stApp, .stMarkdown, p, label {
+    font-family: 'Inter', sans-serif;
+}
+.stApp { background-color: #080808; }
 
-    /* 2. Editorial Headers (Newspaper style) */
-    h1, h2, h3 {
-        font-family: 'Playfair Display', serif !important;
-        color: #FFFFFF !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.5px;
-        text-shadow: none !important;
-    }
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
 
-    /* 3. Completely Invisible Containers */
-    [data-testid="stVerticalBlock"] > div > div {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0px !important;
-    }
+.block-container { max-width: 1200px; padding-top: 2rem; }
 
-    /* 4. Ledger-Style Tables (Lines only, no boxes) */
-    [data-testid="stDataFrame"] {
-        border: none !important;
-        background: transparent !important;
-    }
+/* Tabs: small uppercase labels, white when active */
+button[data-baseweb="tab"] {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #777 !important;
+}
+button[data-baseweb="tab"][aria-selected="true"] { color: #FFFFFF !important; }
 
-    /* 5. Clean minimalist dividers */
-    hr {
-        border-top: 1px solid #222222 !important;
-        margin: 2em 0 !important;
-    }
+/* Metrics: serif numbers, muted uppercase labels */
+div[data-testid="stMetricValue"] {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+}
+div[data-testid="stMetricLabel"] {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+
+/* Inputs get a visible edge */
+div[data-baseweb="input"] > div {
+    background-color: #141414 !important;
+    border: 1px solid #333 !important;
+}
+
+hr { border-top: 1px solid #222 !important; margin: 2em 0 !important; }
+#MainMenu, footer { visibility: hidden; }
 </style>
-
-<h1 style='text-align: center; border-bottom: 2px solid #FFF; padding-bottom: 15px; margin-bottom: 30px;'>HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
