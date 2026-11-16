@@ -37,17 +37,18 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import Premium Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap');
+    /* 1. Import Fonts (Redaction 50 via Fontsource CDN + Inter via Google) */
+    @import url('https://cdn.jsdelivr.net/npm/@fontsource/redaction-50/index.css');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
     html, body, [class*="css"], .stApp {
         font-family: 'Inter', sans-serif !important;
         background-color: #0D0D12 !important; /* Deep charcoal background */
     }
 
-    /* 2. Elegant, Intricate Headers */
-    h1, h2, h3 {
-        font-family: 'Playfair Display', serif !important;
+    /* 2. Redaction 50 Headers (Bespoke Editorial style) */
+    h1, h2, h3, .main-title {
+        font-family: 'Redaction 50', serif !important;
         color: #F8F9FA !important;
         letter-spacing: 0.5px;
     }
