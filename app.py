@@ -37,50 +37,51 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import Fonts (Redaction 50 via Fontsource CDN + Inter via Google) */
+    /* 1. Import Fonts (Redaction 50 via Fontsource CDN + Saira via Google) */
     @import url('https://cdn.jsdelivr.net/npm/@fontsource/redaction-50/index.css');
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
 
     html, body, [class*="css"], .stApp {
-        font-family: 'Inter', sans-serif !important;
-        background-color: #0D0D12 !important; /* Deep charcoal background */
+        font-family: 'Saira', sans-serif !important;
+        background-color: #F8F9FA !important; /* Crisp off-white background */
+        color: #111111 !important; /* Dark text for contrast */
     }
 
-    /* 2. Redaction 50 Headers (Bespoke Editorial style) */
+    /* 2. Redaction 50 Headers */
     h1, h2, h3, .main-title {
         font-family: 'Redaction 50', serif !important;
-        color: #F8F9FA !important;
+        color: #111111 !important; 
         letter-spacing: 0.5px;
     }
 
-    /* 3. The Main Title (With a subtle premium glow) */
+    /* 3. The Main Title */
     .main-title {
         text-align: center;
-        border-bottom: 1px solid #2A2A35;
+        border-bottom: 2px solid #FF5722; /* Vibrant orange accent line */
         padding-bottom: 15px;
         margin-bottom: 30px;
-        text-shadow: 0px 4px 15px rgba(226, 183, 20, 0.15); /* Faint gold glow */
+        text-shadow: none !important;
     }
 
-    /* 4. Premium Dark Cards (Intricate, non-glass containers) */
+    /* 4. Crisp White Cards */
     [data-testid="stVerticalBlock"] > div > div {
-        background: linear-gradient(145deg, #15151A, #111115) !important;
-        border: 1px solid #2A2A35 !important;
-        border-top: 1px solid #3A3A45 !important; /* Slight top highlight for depth */
+        background: #FFFFFF !important;
+        border: 1px solid #EBEBEB !important;
+        border-top: 3px solid #FF5722 !important; /* Bold orange highlight on top of every card */
         border-radius: 6px !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
         padding: 15px !important;
     }
 
-    /* 5. Sharp Data Tables */
+    /* 5. Clean Data Tables */
     [data-testid="stDataFrame"] {
         border-radius: 4px !important;
-        border: 1px solid #2A2A35 !important;
+        border: 1px solid #EBEBEB !important;
     }
 
-    /* 6. Clean Dividers */
+    /* 6. Subtle Dividers */
     hr {
-        border-top: 1px solid #2A2A35 !important;
+        border-top: 1px solid #EBEBEB !important;
         margin: 1.5em 0 !important;
     }
 </style>

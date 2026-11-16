@@ -1,13 +1,13 @@
 [theme]
-# Premium Muted Gold for accents (radio buttons, progress bars)
-primaryColor = "#E2B714"
+# Vibrant basketball orange for buttons, radio selections, and accents
+primaryColor = "#FF5722"
 
-# Deep charcoal/slate for the main background
-backgroundColor = "#0D0D12"
+# Crisp off-white for the main background
+backgroundColor = "#F8F9FA"
 
-# Slightly lighter slate for sidebars to create depth
-secondaryBackgroundColor = "#15151A"
+# Pure white for sidebars and input fields
+secondaryBackgroundColor = "#FFFFFF"
 
-# Crisp off-white text
-textColor = "#E2E8F0"
+# Dark, near-black text for sharp readability
+textColor = "#111111"
 font = "sans serif"
