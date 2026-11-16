@@ -41,28 +41,34 @@ st.markdown("""
     @import url('https://cdn.jsdelivr.net/npm/@fontsource/redaction-50/index.css');
     @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
 
+    /* 2. Global Colors */
     html, body, [class*="css"], .stApp {
-        font-family: 'Saira', sans-serif !important;
-        background-color: #F8F9FA !important;
-        color: #111111 !important;
+        background-color: #F8F9FA !important; /* Crisp off-white background */
+        color: #111111 !important; /* Dark text for contrast */
     }
 
-    /* 2. Redaction 50 Headers */
-    h1, h2, h3, .main-title {
+    /* 3. Force Saira on EVERY standard text element (Alerts, Labels, Metrics, Buttons) */
+    html, body, [class*="css"], .stApp, p, span, div, label, li, .stAlert, input, button, .stMetricValue, .stMetricLabel {
+        font-family: 'Saira', sans-serif !important;
+    }
+
+    /* 4. Force Redaction 50 on all Headers */
+    h1, h2, h3, h4, h5, h6, .main-title {
         font-family: 'Redaction 50', serif !important;
         color: #111111 !important; 
         letter-spacing: 0.5px;
     }
 
-    /* 3. The Main Title */
+    /* 5. The Main Title */
     .main-title {
         text-align: center;
         border-bottom: 2px solid #FF5722;
         padding-bottom: 15px;
         margin-bottom: 30px;
+        text-shadow: none !important;
     }
 
-    /* 4. Crisp White Cards */
+    /* 6. Crisp White Cards */
     [data-testid="stVerticalBlock"] > div > div {
         background: #FFFFFF !important;
         border: 1px solid #EBEBEB !important;
@@ -72,7 +78,7 @@ st.markdown("""
         padding: 15px !important;
     }
 
-    /* 5. Custom HTML Tables (This styles the inside of the table!) */
+    /* 7. Custom HTML Tables */
     .custom-table {
         width: 100%;
         border-collapse: collapse;
@@ -80,9 +86,9 @@ st.markdown("""
         font-size: 15px;
     }
     .custom-table th {
-        background-color: #FF5722; /* Orange headers */
-        color: #FFFFFF;
-        font-family: 'Redaction 50', serif !important; /* Bespoke font for headers */
+        background-color: #FF5722;
+        color: #FFFFFF !important;
+        font-family: 'Redaction 50', serif !important; /* Forces Redaction 50 for table headers */
         font-weight: 500;
         text-align: left;
         padding: 12px;
@@ -94,10 +100,10 @@ st.markdown("""
         color: #111111;
     }
     .custom-table tr:nth-child(even) {
-        background-color: #FDFDFD; /* Very faint alternating row colors */
+        background-color: #FDFDFD;
     }
 
-    /* 6. Subtle Dividers */
+    /* 8. Subtle Dividers */
     hr {
         border-top: 1px solid #EBEBEB !important;
         margin: 1.5em 0 !important;
