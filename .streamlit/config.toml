@@ -1,13 +1,13 @@
 [theme]
-# Muted blue accent for minimal distraction
-primaryColor = "#4A90E2"
+# Pure white for any active accents/links
+primaryColor = "#FFFFFF"
 
-# Deep matte charcoal for the background
-backgroundColor = "#121212"
+# Pitch black background
+backgroundColor = "#080808"
 
-# Slightly lighter matte for sidebars/menus
-secondaryBackgroundColor = "#1E1E1E"
+# Pitch black for sidebars/menus (makes them blend perfectly)
+secondaryBackgroundColor = "#080808"
 
-# Off-white text for less eye strain
-textColor = "#E0E0E0"
+# Crisp off-white text for readability
+textColor = "#EAEAEA"
 font = "sans serif"

@@ -37,40 +37,45 @@ def get_top_scorers():
 st.set_page_config(page_title="PG's NBA Predictor", page_icon="🏀", layout="wide")
 st.markdown("""
 <style>
-    /* 1. Import a classic data-journalism font (Inter) */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* 1. Import Editorial Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap');
 
-    html, body, [class*="css"] {
+    html, body, [class*="css"], .stApp {
         font-family: 'Inter', sans-serif !important;
+        background-color: #080808 !important; /* Pitch black */
     }
 
-    /* 2. Flat, minimalist layout (Removes Liquid Glass) */
+    /* 2. Editorial Headers (Newspaper style) */
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif !important;
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px;
+        text-shadow: none !important;
+    }
+
+    /* 3. Completely Invisible Containers */
     [data-testid="stVerticalBlock"] > div > div {
         background: transparent !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        border-radius: 0px !important;
         border: none !important;
         box-shadow: none !important;
-        padding: 5px;
+        padding: 0px !important;
     }
 
-    /* 3. Ledger-style tables: thin borders, squared corners */
+    /* 4. Ledger-Style Tables (Lines only, no boxes) */
     [data-testid="stDataFrame"] {
-        border-radius: 2px !important;
-        border: 1px solid #333333 !important;
+        border: none !important;
+        background: transparent !important;
     }
 
-    /* 4. Crisp, unshadowed headers */
-    h1, h2, h3 {
-        color: #F8F9FA !important;
-        font-weight: 600 !important;
-        text-shadow: none !important;
-        margin-bottom: 0.5rem !important;
+    /* 5. Clean minimalist dividers */
+    hr {
+        border-top: 1px solid #222222 !important;
+        margin: 2em 0 !important;
     }
 </style>
 
-<h1 style='text-align: left; border-bottom: 1px solid #333; padding-bottom: 15px;'>🏀 HoopPix</h1>
+<h1 style='text-align: center; border-bottom: 2px solid #FFF; padding-bottom: 15px; margin-bottom: 30px;'>HoopPix</h1>
 """, unsafe_allow_html=True)
 
 # --- Initialize Cookie Manager ---
